@@ -14,26 +14,27 @@
             </form>
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$text = $_POST["text"];
-			function remove_numbers($condition = "null") {
-			$pattern = '/\d+/';
-			if (preg_match_all ($pattern, $condition, $matches, PREG_OFFSET_CAPTURE)) {
-				foreach ($matches[0] as $match) {
-       				echo $match[0]." ";
-				}
-			} 
-		}
-		function write_fail($condition) {
+			function remove_numbers($condition) {
+				if (preg_match_all ('/\d+/', $condition, $matches, PREG_OFFSET_CAPTURE)) {
+					$result = "";
+					foreach ($matches[0] as $match) {
+       					$result = $result.$match[0]." ";
+					}
+					
+				} 
+				return $result;
+			}
+		function write_fail($write) {
 			$my_file = fopen("file.txt", "a");
-			fwrite($my_file, $condition."\n");
+			fwrite($my_file, $write."\n");
 			fclose($my_file);
 		}	
 		if ($text == "null") {
 			die;
 		} else {
 		echo "Найденные числа:<br><br>";
-		ob_start(null, 0, PHP_OUTPUT_HANDLER_STDFLAGS ^ PHP_OUTPUT_HANDLER_REMOVABLE);
-		remove_numbers($text);
-		write_fail($text);	
+		echo remove_numbers($text);
+		write_fail(remove_numbers($text));
 		echo "<br><br>Обработанный текст:<br><br>";
 		echo $text;
 		}
