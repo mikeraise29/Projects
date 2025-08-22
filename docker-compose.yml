@@ -1,0 +1,13 @@
+services:
+  php-cli:
+    image: php:8.4-cli
+    container_name: my_first_docker_compose
+    working_dir: /app
+    volumes: 
+      - .:/app
+    command: php -S 0.0.0.0:8020 -t /app
+    ports:
+      - "8020:8020"
+
+
+  
