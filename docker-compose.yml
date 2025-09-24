@@ -1,13 +1,28 @@
 services:
   php-cli:
-    image: php:8.4-cli
-    container_name: my_first_docker_compose
+    container_name: php-cli
     working_dir: /app
     volumes: 
       - .:/app
+    build: .
+    depends_on:
+      - db
     command: php -S 0.0.0.0:8020 -t /app
     ports:
       - "8020:8020"
+  db:
+    container_name: my_first_db
+    image: postgres:14
+    volumes: 
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: firstdb
+    ports:
+      - "5432:5432"
+volumes:
+  db_data:
 
 
   
